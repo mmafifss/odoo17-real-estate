@@ -54,8 +54,12 @@ Modul custom enterprise untuk Odoo 17 yang dirancang untuk mengelola siklus hidu
 - Template laporan PDF resmi untuk lembar spesifikasi properti dan riwayat daftar penawaran masuk.
 
 ### 7. Integrasi Modul Invoicing & Stat Button (Enterprise Workflow)
-- **Otomatisasi Tagihan (`account.move`)**: Saat properti berstatus *Sold*, sistem menyediakan tombol untuk otomatis membuat faktur tagihan pelanggan ke pembeli (komisi penjualan 6% + biaya administrasi).
+- **Otomatisasi Tagihan (`account.move`)**: Saat properti berstatus *Sold*, sistem menyediakan tombol untuk otomatis membuat faktur tagihan pelanggan ke pembeli (komisi penjualan + biaya administrasi).
 - **Smart Button (Stat Button)**: Menampilkan tautan cepat menuju faktur tagihan terkait langsung di pojok kanan atas formulir properti.
+
+### 8. Konfigurasi Sistem Dinamis (`res.config.settings`)
+- **Tab Pengaturan Real Estate**: Terintegrasi ke dalam menu *General Settings* Odoo untuk mengatur parameter global aplikasi.
+- **Nilai Konfigurasi Dinamis**: Pengaturan persentase komisi agen dan biaya administrasi standar tersimpan otomatis ke `ir.config_parameter`, sehingga nilai kalkulasi invoice dapat disesuaikan tanpa mengubah kode program.
 
 ---
 

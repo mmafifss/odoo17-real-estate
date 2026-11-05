@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- View Inherit Res Config Settings -->
+        <record id="res_config_settings_view_form_real_estate" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.real_estate</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="70"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <app data-string="Real Estate" string="Real Estate" name="real_estate">
+                        <block title="Komisi &amp; Biaya Penjualan" name="real_estate_commission_setting">
+                            <setting id="commission_setting" string="Komisi Agen (%)" 
+                                     help="Persentase komisi standar untuk agen saat pembuatan tagihan invoice penjualan properti.">
+                                <field name="default_commission_rate"/>
+                            </setting>
+                            <setting id="admin_fee_setting" string="Biaya Administrasi &amp; Legal" 
+                                     help="Biaya tetap pengurusan berkas legalitas dan administrasi properti.">
+                                <field name="default_admin_fee"/>
+                            </setting>
+                        </block>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Window Action Settings -->
+        <record id="action_real_estate_config_settings" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module': 'real_estate', 'bin_size': False}</field>
+        </record>
+
+        <!-- Menu Settings di Real Estate -> Configuration -> Settings -->
+        <menuitem id="estate_settings_menu" name="Settings" 
+                  parent="estate_configuration_menu" 
+                  action="action_real_estate_config_settings" 
+                  sequence="100"/>
+    </data>
+</odoo>

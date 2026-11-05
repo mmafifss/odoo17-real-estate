@@ -18,6 +18,7 @@
         'security/ir.model.access.csv',
         'wizards/property_offer_wizard_views.xml',
         'views/views.xml',
+        'views/res_config_settings_views.xml',
         'reports/property_report.xml',
         'data/demo_data.xml',
     ],
