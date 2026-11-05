@@ -13,11 +13,11 @@
                         <block title="Komisi &amp; Biaya Penjualan" name="real_estate_commission_setting">
                             <setting id="commission_setting" string="Komisi Agen (%)" 
                                      help="Persentase komisi standar untuk agen saat pembuatan tagihan invoice penjualan properti.">
-                                <field name="default_commission_rate"/>
+                                <field name="commission_rate"/>
                             </setting>
                             <setting id="admin_fee_setting" string="Biaya Administrasi &amp; Legal" 
                                      help="Biaya tetap pengurusan berkas legalitas dan administrasi properti.">
-                                <field name="default_admin_fee"/>
+                                <field name="admin_fee"/>
                             </setting>
                         </block>
                     </app>

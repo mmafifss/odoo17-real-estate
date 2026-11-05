@@ -139,8 +139,8 @@ class EstateProperty(models.Model):
 
         # Ambil nilai komisi dan admin fee dari pengaturan (Settings)
         config_param = self.env['ir.config_parameter'].sudo()
-        commission_rate = float(config_param.get_param('real_estate.default_commission_rate', 6.0))
-        admin_fee = float(config_param.get_param('real_estate.default_admin_fee', 1500000.0))
+        commission_rate = float(config_param.get_param('real_estate.commission_rate', 6.0))
+        admin_fee = float(config_param.get_param('real_estate.admin_fee', 1500000.0))
 
         commission = self.selling_price * (commission_rate / 100.0)
 
