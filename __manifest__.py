@@ -12,7 +12,7 @@
     'author': "Developer",
     'category': 'Real Estate',
     'version': '17.0.1.0.0',
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'account'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

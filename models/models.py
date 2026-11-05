@@ -56,6 +56,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, readonly=True, tracking=True)
+    invoice_id = fields.Many2one('account.move', string='Invoice', readonly=True, copy=False)
     salesperson_id = fields.Many2one(
         'res.users',
         string='Salesperson',
@@ -121,10 +122,57 @@ class EstateProperty(models.Model):
 
     def action_reset(self):
         for record in self:
+            if record.invoice_id and record.invoice_id.state == 'posted':
+                raise UserError("Tidak bisa mereset properti karena invoice sudah disahkan/diposting!")
             record.state = 'new'
             record.selling_price = 0.0
             record.buyer_id = False
+            record.invoice_id = False
         return True
+
+    def action_create_invoice(self):
+        self.ensure_one()
+        if not self.buyer_id:
+            raise UserError("Pembeli belum ditentukan untuk membuat tagihan!")
+        if self.invoice_id:
+            raise UserError("Faktur tagihan untuk properti ini sudah pernah dibuat!")
+
+        # Hitung komisi 6% dan biaya administrasi
+        commission = self.selling_price * 0.06
+        admin_fee = 1500000.0
+
+        invoice = self.env['account.move'].create({
+            'partner_id': self.buyer_id.id,
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [
+                fields.Command.create({
+                    'name': f"Komisi Agen Penjualan Properti: {self.name}",
+                    'quantity': 1,
+                    'price_unit': commission,
+                }),
+                fields.Command.create({
+                    'name': "Biaya Administrasi & Dokumen Legal",
+                    'quantity': 1,
+                    'price_unit': admin_fee,
+                }),
+            ],
+        })
+        self.invoice_id = invoice.id
+        self.message_post(
+            body=f"Faktur tagihan <b>{invoice.name or 'Draft Tagihan'}</b> sebesar <b>{(commission + admin_fee):,.2f}</b> berhasil dibuat untuk pembeli <b>{self.buyer_id.name}</b>.",
+            subtype_xmlid='mail.mt_note'
+        )
+        return self.action_view_invoice()
+
+    def action_view_invoice(self):
+        self.ensure_one()
+        return {
+            'name': 'Faktur Tagihan',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'res_id': self.invoice_id.id,
+        }
 
 
 class EstatePropertyType(models.Model):

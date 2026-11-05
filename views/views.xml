@@ -75,6 +75,8 @@
                                 invisible="state in ('sold', 'canceled')"/>
                         <button name="action_set_sold" type="object" string="Tandai Terjual" 
                                 class="btn-primary" invisible="state in ('sold', 'canceled')"/>
+                        <button name="action_create_invoice" type="object" string="Buat Faktur (Invoice)" 
+                                class="btn-success" invisible="state != 'sold' or invoice_id"/>
                         <button name="action_set_canceled" type="object" string="Batalkan" 
                                 invisible="state in ('sold', 'canceled')"/>
                         <button name="action_reset" type="object" string="Kembalikan ke Belum Terjual" 
@@ -83,6 +85,14 @@
                                statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_invoice" type="object" class="oe_stat_button" 
+                                    icon="fa-pencil-square-o" invisible="not invoice_id">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Faktur Tagihan</span>
+                                </div>
+                            </button>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Contoh: Villa Mewah di Jimbaran"/>
@@ -137,6 +147,7 @@
                                 <group>
                                     <field name="salesperson_id"/>
                                     <field name="buyer_id"/>
+                                    <field name="invoice_id" invisible="not invoice_id"/>
                                 </group>
                             </page>
                         </notebook>

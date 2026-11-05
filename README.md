@@ -53,6 +53,10 @@ Modul custom enterprise untuk Odoo 17 yang dirancang untuk mengelola siklus hidu
 ### 6. Pelaporan Cetak Dokumen (QWeb Report)
 - Template laporan PDF resmi untuk lembar spesifikasi properti dan riwayat daftar penawaran masuk.
 
+### 7. Integrasi Modul Invoicing & Stat Button (Enterprise Workflow)
+- **Otomatisasi Tagihan (`account.move`)**: Saat properti berstatus *Sold*, sistem menyediakan tombol untuk otomatis membuat faktur tagihan pelanggan ke pembeli (komisi penjualan 6% + biaya administrasi).
+- **Smart Button (Stat Button)**: Menampilkan tautan cepat menuju faktur tagihan terkait langsung di pojok kanan atas formulir properti.
+
 ---
 
 ## 📂 Struktur Modul
