@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Kategori Hak Akses -->
+        <record id="module_category_real_estate" model="ir.module.category">
+            <field name="name">Real Estate</field>
+            <field name="description">Manajemen Hak Akses Aplikasi Real Estate</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- Grup 1: Agent (User Biasa) -->
+        <record id="group_estate_agent" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="category_id" ref="module_category_real_estate"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Grup 2: Manager (Pimpinan/Admin Modul) -->
+        <record id="group_estate_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_real_estate"/>
+            <field name="implied_ids" eval="[(4, ref('group_estate_agent'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- ============================================== -->
+        <!-- RECORD RULES (Hak Akses Tingkat Data / Record) -->
+        <!-- ============================================== -->
+
+        <!-- Rule Agent: Hanya bisa melihat/mengedit properti miliknya sendiri atau yang belum ditugaskan -->
+        <record id="estate_property_agent_rule" model="ir.rule">
+            <field name="name">Agent: Properti Pribadi</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">[('salesperson_id', 'in', [user.id, False])]</field>
+            <field name="groups" eval="[(4, ref('group_estate_agent'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/> <!-- Agent tidak boleh hapus properti -->
+        </record>
+
+        <!-- Rule Manager: Bisa melihat, mengedit, dan menghapus SEMUA properti -->
+        <record id="estate_property_manager_rule" model="ir.rule">
+            <field name="name">Manager: Semua Properti</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_estate_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+</odoo>
+

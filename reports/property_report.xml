@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Report Action -->
+        <record id="action_report_property" model="ir.actions.report">
+            <field name="name">Ringkasan Properti (PDF)</field>
+            <field name="model">estate.property</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">real_estate.report_property_document</field>
+            <field name="report_file">real_estate.report_property_document</field>
+            <field name="print_report_name">'Properti - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_estate_property"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Report Template Document -->
+        <template id="report_property_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="property">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2><span t-field="property.name"/></h2>
+                            <p class="text-muted">
+                                <strong>Tipe:</strong> <span t-field="property.property_type_id.name"/> | 
+                                <strong>Kodepos:</strong> <span t-field="property.postcode"/>
+                            </p>
+
+                            <hr/>
+
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <strong>Harga Harapan:</strong> 
+                                    <span t-field="property.expected_price" 
+                                          t-options='{"widget": "monetary", "display_currency": property.env.company.currency_id}'/>
+                                    <br/>
+                                    <strong>Status:</strong> <span t-field="property.state"/>
+                                    <br/>
+                                    <strong>Kamar Tidur:</strong> <span t-field="property.bedrooms"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Harga Terjual:</strong> 
+                                    <span t-field="property.selling_price" 
+                                          t-options='{"widget": "monetary", "display_currency": property.env.company.currency_id}'/>
+                                    <br/>
+                                    <strong>Luas Total:</strong> <span t-field="property.total_area"/> m²
+                                    <br/>
+                                    <strong>Pembeli:</strong> <span t-field="property.buyer_id.name"/>
+                                </div>
+                            </div>
+
+                            <h4>Daftar Penawaran Masuk</h4>
+                            <table class="table table-sm o_main_table table-striped mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Calon Pembeli</th>
+                                        <th class="text-end">Nominal Tawaran</th>
+                                        <th class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="property.offer_ids">
+                                        <tr t-foreach="property.offer_ids" t-as="offer">
+                                            <td><span t-field="offer.partner_id.name"/></td>
+                                            <td class="text-end">
+                                                <span t-field="offer.price" 
+                                                      t-options='{"widget": "monetary", "display_currency": property.env.company.currency_id}'/>
+                                            </td>
+                                            <td class="text-center"><span t-field="offer.status"/></td>
+                                        </tr>
+                                    </t>
+                                    <t t-else="">
+                                        <tr>
+                                            <td colspan="3" class="text-center text-muted">Belum ada penawaran.</td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+

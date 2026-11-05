@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View Wizard -->
+        <record id="property_offer_wizard_view_form" model="ir.ui.view">
+            <field name="name">property.offer.wizard.form</field>
+            <field name="model">property.offer.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Ajukan Penawaran Properti">
+                    <group>
+                        <group>
+                            <field name="property_id" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="price"/>
+                        </group>
+                        <group>
+                            <field name="validity_days"/>
+                            <field name="date_deadline"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Catatan tambahan dari calon pembeli..."/>
+                    </group>
+                    <footer>
+                        <button name="action_submit_offer" type="object" string="Kirim Penawaran" class="btn-primary"/>
+                        <button string="Batal" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action Window Wizard -->
+        <record id="action_property_offer_wizard" model="ir.actions.act_window">
+            <field name="name">Ajukan Penawaran</field>
+            <field name="res_model">property.offer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_estate_property"/>
+            <field name="binding_view_types">form</field>
+        </record>
+    </data>
+</odoo>
+
